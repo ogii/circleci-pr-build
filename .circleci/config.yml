@@ -16,6 +16,11 @@ jobs:
             HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
             TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
             echo "$HEAD_BRANCH -> $TARGET_BRANCH"
+            if [[ $HEAD_BRANCH == "dev" && $TARGET_BRANCH == "main"]] then
+              echo "Run integration tests"
+            else
+              echo "Exit Job"
+            fi
             
 workflows:
   github_cli:
