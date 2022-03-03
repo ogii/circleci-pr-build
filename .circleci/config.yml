@@ -4,7 +4,7 @@ orbs:
   gh: circleci/github-cli@2.1.0
   
 jobs:
-  build:
+  build: 
     docker: 
       - image: cimg/base:edge
     steps:
