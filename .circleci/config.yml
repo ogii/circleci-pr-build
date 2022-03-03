@@ -13,8 +13,9 @@ jobs:
       - run:
           name: Determine PR target branch
           command: |
+            HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
             TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
-            echo $TARGET_BRANCH
+            echo "$HEAD_BRANCH -> $TARGET_BRANCH"
             
 workflows:
   github_cli:
