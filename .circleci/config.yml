@@ -27,6 +27,7 @@ jobs:
               echo "Branch conditions met"
             else
               echo "Exiting Job"
+              circleci-agent step halt
             fi
       - run:
           name: Run integration tests
