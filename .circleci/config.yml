@@ -5,7 +5,14 @@ orbs:
   
 jobs:
   build:
-    docker:
+    parameters:
+      head_branch:
+        type: string
+        default: ""
+      target_branch:
+        type: string
+        default: ""
+    docker: 
       - image: cimg/base:edge
     steps:
       - checkout
@@ -13,10 +20,22 @@ jobs:
       - run:
           name: Determine PR target branch
           command: |
+            HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
             TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
-            echo $TARGET_BRANCH
+            echo "$HEAD_BRANCH -> $TARGET_BRANCH"
+            if [[ $HEAD_BRANCH == "<<parameters.head_branch>>" ]] && [[ $TARGET_BRANCH == "<<parameters.target_branch>>" ]]; then
+              echo "Branch conditions met"
+            else
+              echo "Exiting Job"
+              circleci-agent step halt
+            fi
+      - run:
+          name: Run integration tests
+          command: echo "Running integration tests...."
             
 workflows:
   github_cli:
     jobs:
-      - build
+      - build:
+          head_branch: "dev"
+          target_branch: "main"
