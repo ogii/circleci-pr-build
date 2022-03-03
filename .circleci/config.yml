@@ -20,9 +20,15 @@ jobs:
       - run:
           name: Determine PR target branch
           command: |
+            if [ -z "$CIRCLE_PULL_REQUEST" ]; then
+                  echo "This is not a pull request" && exit 1
+            fi
+            
             HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
             TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            
             echo "$HEAD_BRANCH -> $TARGET_BRANCH"
+            
             if [[ $HEAD_BRANCH == "<<parameters.head_branch>>" ]] && [[ $TARGET_BRANCH == "<<parameters.target_branch>>" ]]; then
               echo "Branch conditions met"
             else
