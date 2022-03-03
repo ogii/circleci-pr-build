@@ -5,6 +5,13 @@ orbs:
   
 jobs:
   build:
+    parameters:
+      head_branch:
+        type: string
+        default: ""
+      target_branch:
+        type: string
+        default: ""
     docker: 
       - image: cimg/base:edge
     steps:
@@ -16,7 +23,7 @@ jobs:
             HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
             TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
             echo "$HEAD_BRANCH -> $TARGET_BRANCH"
-            if [[ $HEAD_BRANCH == "dev" ]] && [[ $TARGET_BRANCH == "main" ]]; then
+            if [[ $HEAD_BRANCH == "<<parameters.head_branch>>" ]] && [[ $TARGET_BRANCH == "<<parameters.target_branch>>" ]]; then
               echo "Branch conditions met"
             else
               echo "Exiting Job"
@@ -28,4 +35,6 @@ jobs:
 workflows:
   github_cli:
     jobs:
-      - build
+      - build:
+          head_branch: "dev"
+          target_branch: "main"
