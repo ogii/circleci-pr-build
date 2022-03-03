@@ -10,10 +10,13 @@ jobs:
     steps:
       - checkout
       - gh/setup
-      - run: echo "test"
-
+      - run:
+          name: Determine PR target branch
+          command: |
+            TARGET_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json baseRefName --jq '.baseRefName')
+            echo $TARGET_BRANCH
+            
 workflows:
   github_cli:
     jobs:
       - build
-
