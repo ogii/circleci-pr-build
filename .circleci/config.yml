@@ -21,7 +21,7 @@ jobs:
           name: Determine PR target branch
           command: |
             if [[ -z "$CIRCLE_PULL_REQUEST" ]]; then
-              echo "This is not a pull request" && exit 1
+              echo "This is not a pull request" #&& exit 1
             fi
             
             HEAD_BRANCH=$(gh pr view $CIRCLE_PULL_REQUEST --json headRefName --jq '.headRefName')
@@ -33,7 +33,7 @@ jobs:
               echo "Branch conditions met"
             else
               echo "Exiting Job"
-              circleci-agent step halt
+              #circleci-agent step halt
             fi
       - run:
           name: Run integration tests
