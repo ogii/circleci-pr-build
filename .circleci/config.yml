@@ -37,7 +37,7 @@ jobs:
             fi
       - run:
           name: Run integration tests
-          command: echo "Running integration tests...."
+          command: echo "Running integration tests...." 
             
 workflows:
   github_cli:
