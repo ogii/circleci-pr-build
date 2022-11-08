@@ -4,11 +4,6 @@ orbs:
   gh: circleci/github-cli@2.1.0
   
 jobs:
-  machinejob:
-    machine: true
-    steps:
-      - checkout
-      - setup_remote_docker
   build:
     parameters:
       head_branch:
@@ -20,6 +15,7 @@ jobs:
     docker: 
       - image: cimg/base:edge
     steps:
+      - setup_remote_docker
       - checkout
       - gh/setup
       - run:
@@ -50,4 +46,3 @@ workflows:
       - build:
           head_branch: "dev"
           target_branch: "main"
-      - machinejob
