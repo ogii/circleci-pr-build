@@ -41,7 +41,7 @@ jobs:
             
 workflows:
   github_cli:
-    jobs:
+    jobs: 
       - build:
           head_branch: "dev"
           target_branch: "main"
